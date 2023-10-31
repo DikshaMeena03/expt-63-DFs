@@ -1,0 +1,60 @@
+#include <iostream>
+#include <vector>
+#include <stack>
+
+using namespace std;
+
+class Graph {
+private:
+    int numVertices;
+    vector<vector<int>> adjList;
+
+public:
+    Graph(int vertices) : numVertices(vertices), adjList(vertices) {}
+
+    void addEdge(int src, int dest) {
+        adjList[src].push_back(dest);
+    }
+
+    void DFS(int startVertex) {
+        vector<bool> visited(numVertices, false);
+        stack<int> stk;
+
+        stk.push(startVertex);
+
+        while (!stk.empty()) {
+            int currentVertex = stk.top();
+            stk.pop();
+
+            if (!visited[currentVertex]) {
+                cout << currentVertex << " ";
+                visited[currentVertex] = true;
+
+                for (int adjacentVertex : adjList[currentVertex]) {
+                    if (!visited[adjacentVertex]) {
+                        stk.push(adjacentVertex);
+                    }
+                }
+            }
+        }
+    }
+};
+
+int main() {
+    int numVertices = 7;
+    Graph graph(numVertices);
+
+    graph.addEdge(0, 1);
+    graph.addEdge(0, 2);
+    graph.addEdge(1, 3);
+    graph.addEdge(1, 4);
+    graph.addEdge(2, 5);
+    graph.addEdge(2, 6);
+
+    int startVertex = 0;
+    cout << "Depth-First Traversal (starting from vertex " << startVertex << "): ";
+    graph.DFS(startVertex);
+    cout << endl;
+
+    return 0;
+}
